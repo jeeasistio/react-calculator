@@ -1,5 +1,5 @@
 SystemJS.config({
-  baseURL:'https://unpkg.com/',
+  baseURL: 'https://unpkg.com/',
   defaultExtension: true,
   meta: {
     '*.jsx': {

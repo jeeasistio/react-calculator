@@ -1,8 +1,15 @@
-import React from 'react';
-import { makeStyles, Grid, IconButton, Button } from '@material-ui';
+import React, { useState } from 'react';
+import {
+  makeStyles,
+  Grid,
+  IconButton,
+  Button,
+  Snackbar,
+  SnackbarContent
+} from '@material-ui';
 
 const Buttons = ({ output, setOutput, history, setHistory }) => {
-  
+
   const useStyles = makeStyles(theme => ({
     root: {
       textAlign: 'center',
@@ -27,30 +34,46 @@ const Buttons = ({ output, setOutput, history, setHistory }) => {
       fontSize: 16,
       background: 'linear-gradient(#0c0, #0c0)',
       color: '#fff'
+    },
+    snackStyle: {
+      background: '#f55',
+      maxWidth: 170,
+      minWidth: 170,
+      width: 170,
+      margin: 'auto',
+      justifyContent: 'center'
     }
   }))
-  
+
   const classes = useStyles();
-  
+
+  const [snackIsOpen, setSnackIsOpen] = useState(false);
+
   const changeOutput = (e) => {
     setOutput(output + e.target.innerText);
   }
-  
+
   const clearOutput = () => {
     setOutput('');
     setHistory('');
   }
-  
+
   const evalOutput = () => {
     setOutput('');
-    if (output.match(/^[\-\+\*\/\%]/)) {
-      const newExpression = history + output;
-      setHistory(eval(history ? newExpression : output));
-    } else {
-      setHistory(eval(output));
+    try {
+      if (output.match(/^[\-\+\*\/\%]/)) {
+        const newExpression = history + output;
+        setHistory(eval(history ? newExpression : output));
+      } else {
+        setHistory(eval(output));
+      }
+    } catch (e) {
+      if (e instanceof SyntaxError) {
+        setSnackIsOpen(true);
+      }
     }
   }
-  
+
   return (
     <section
       className={classes.root}
@@ -104,6 +127,9 @@ const Buttons = ({ output, setOutput, history, setHistory }) => {
           </Button>
         </Grid>
       </Grid>
+      <Snackbar onClose={() => setSnackIsOpen(false)} open={snackIsOpen} autoHideDuration="1500">
+        <SnackbarContent message="Invalid Output" className={classes.snackStyle} />
+      </Snackbar>
     </section>
   )
 }

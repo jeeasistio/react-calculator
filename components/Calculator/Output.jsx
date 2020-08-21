@@ -29,7 +29,7 @@ const Output = ({ output, setOutput, history }) => {
   }))
 
   const classes = useStyles();
-  
+
   const eraseOutput = () => {
     setOutput(output.substr(0, output.length - 1));
   }

@@ -11,7 +11,7 @@ const App = () => {
         <Header />
         <Calculator />
       </CssBaseline>
-    </div>  
+    </div>
   )
 }
 
